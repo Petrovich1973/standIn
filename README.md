@@ -1,0 +1,2 @@
+# standIn
+Экран консоли standIn
