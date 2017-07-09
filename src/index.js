@@ -14,6 +14,8 @@ import {
 import WizardToStanIn from './WizardToStanIn'
 import WizardToMainDataBase from './WizardToMainDataBase'
 
+import Clock from './Clock'
+
 
 class App extends React.Component {
 	constructor(props) {
@@ -69,7 +71,7 @@ class App extends React.Component {
 					</div>
 				</div>
 				<div className="panel controls">
-					<div className="container"></div>
+					<div className="container"><Clock intervalCount={20}/> | <Clock intervalCount={1}/></div>
 				</div>
 				<div className="container">
 					{ currentDB === 0 ? <WizardToStanIn /> : <WizardToMainDataBase /> }
