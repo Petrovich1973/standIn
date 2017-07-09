@@ -48,7 +48,18 @@ class WizardToStanIn extends React.Component {
 	}
 
 	handleAactionStep(stepUpdate) {
-		console.log(stepUpdate)
+		if(stepUpdate === 1 && this.state.steps.filter(f => f.id === stepUpdate)[0].status === 'ready') {
+			let updateSteps = this.state.steps.map(m => {
+									if(m.id === 1 ||m.id === 2 ) {
+										return {...m, status: 'active'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps
+			})
+		}
 	}
 
 	render() {

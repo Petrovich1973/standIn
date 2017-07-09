@@ -22,20 +22,23 @@ class Step extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		if( nextProps.step.status != this.state.step.status) {
+			nextProps.step.status === 'active' ? this.startClock() : null
+		}
 		this.setState({
-			step: nextProps.step
+			step: {...this.state.step, status: nextProps.step.status}
 		})
 	}
 
-	// start() {
-	// 	this.intervalCount = setInterval( this.actionCount.bind(this), 1000 );
-	// }
+	startClock() {
+		this.intervalCount = setInterval( this.actionCount.bind(this), 1000 );
+	}
 
-	// stop() {
-	// 	clearInterval(this.intervalCount);
-	// }
+	stopClock() {
+		clearInterval(this.intervalCount);
+	}
 
-	time(value) {
+	viewTime(value) {
 		let seconds = moment.duration(value).seconds();
 		let minutes = moment.duration(value).minutes();
 		let hours = moment.duration(value).hours();
@@ -43,31 +46,33 @@ class Step extends React.Component {
 		return pad2(hours) + ':' + pad2(minutes) + ':' + pad2(seconds);
 	}
 
-	counter(a, b) {
+	viewCounter(a, b) {
 		let sep = a > b ? '>' : a < b ? '/' : '=';
 		return a + ' ' + sep + ' ' + b;
 	}
 
-	// timeInterval() {
-	// 	let step = this.props.step;
-	// 	step.milliseconds = step.milliseconds += 1000;
-	// 	this.sentToParent(step);
-	// }
+	timeInterval() {
+		let step = this.state.step;
+		step.milliseconds = step.milliseconds += 1000;
+	}
 
-	// actionCount() {
-	// 	let step = this.props.step;
+	actionCount() {
+		let step = this.state.step;
 		
-	// 	if(step.countStartVal < step.countEndVal) {
-	// 		step.countStartVal += step.intervalValue;
-	// 	}
-	// 	if(step.countStartVal > step.countEndVal) {
-	// 		step.countStartVal -= step.intervalValue;
-	// 	}
-	// 	if(step.countStartVal === step.countEndVal) {
-	// 		this.stop()
-	// 	}
-	// 	this.sentToParent(step);
-	// }
+		if(step.countStartVal < step.countEndVal) {
+			step.countStartVal += step.intervalValue;
+		}
+		if(step.countStartVal > step.countEndVal) {
+			step.countStartVal -= step.intervalValue;
+		}
+		if(step.countStartVal === step.countEndVal) {
+			this.stopClock()
+		}
+		console.log(step.countStartVal)
+		this.setState({
+			step: step
+		})
+	}
 
 	clickStep() {
 		this.props.handleAactionStep(this.state.step.id);
@@ -76,11 +81,11 @@ class Step extends React.Component {
 	render() {
 		const { step } = this.state;
 		return (
-				<div className={step.status} onClick={() => this.clickStep(this)}>
+				<div className={step.status} onClick={() => this.clickStep(this)}>					
 					<div>
 						<div className="name">{step.id} {step.name}</div>
-						<div className="time"><Icon name='clock-o' /> {this.time(step.milliseconds)}</div>
-						<div className="counter">{this.counter(step.countStartVal, step.countEndVal)}</div>
+						<div className="time"><Icon name='clock-o' /> {this.viewTime(step.milliseconds)}</div>
+						<div className="counter">{this.viewCounter(step.countStartVal, step.countEndVal)}</div>
 					</div>
 				</div>
 			);
