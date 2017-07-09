@@ -54,9 +54,13 @@ class Step extends React.Component {
 	timeInterval() {
 		let step = this.state.step;
 		step.milliseconds = step.milliseconds += 1000;
+		this.setState({
+			step: step
+		})
 	}
 
 	actionCount() {
+		this.timeInterval()
 		let step = this.state.step;
 		
 		if(step.countStartVal < step.countEndVal) {
@@ -66,16 +70,17 @@ class Step extends React.Component {
 			step.countStartVal -= step.intervalValue;
 		}
 		if(step.countStartVal === step.countEndVal) {
-			this.stopClock()
+			step.status = 'complete';
+			this.stopClock();
+			this.props.handleAactionStep(step);
 		}
-		console.log(step.countStartVal)
 		this.setState({
 			step: step
 		})
 	}
 
 	clickStep() {
-		this.props.handleAactionStep(this.state.step.id);
+		this.props.handleAactionStep(this.state.step);
 	}
 
 	render() {

@@ -48,9 +48,9 @@ class WizardToStanIn extends React.Component {
 	}
 
 	handleAactionStep(stepUpdate) {
-		if(stepUpdate === 1 && this.state.steps.filter(f => f.id === stepUpdate)[0].status === 'ready') {
+		if(stepUpdate.id === 1 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
 			let updateSteps = this.state.steps.map(m => {
-									if(m.id === 1 ||m.id === 2 ) {
+									if(m.id === 1 || m.id === 2 ) {
 										return {...m, status: 'active'}
 									} else {
 										return m
@@ -58,6 +58,72 @@ class WizardToStanIn extends React.Component {
 								})
 			this.setState({
 				steps: updateSteps
+			})
+		}
+		if(stepUpdate.id === 2 && stepUpdate.status === 'complete') {
+			let updateSteps = this.state.steps.map(m => {
+									if( m.id === 3 ) {
+										return {...m, status: 'ready'}
+									} else if( m.id === 1 || m.id === 2 ) {
+										return {...m, status: 'complete'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps
+			})
+		}
+		if(stepUpdate.id === 3 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
+			let updateSteps = this.state.steps.map(m => {
+									if(m.id === 3 || m.id === 4 ) {
+										return {...m, status: 'active'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps,
+				start: false
+			})
+		}
+		if(stepUpdate.id === 4 && stepUpdate.status === 'complete') {
+			let updateSteps = this.state.steps.map(m => {
+									if( m.id === 5 ) {
+										return {...m, status: 'ready'}
+									} else if( m.id === 3 || m.id === 4 ) {
+										return {...m, status: 'complete'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps
+			})
+		}
+		if(stepUpdate.id === 5 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
+			let updateSteps = this.state.steps.map(m => {
+									if(m.id === 5 ) {
+										return {...m, status: 'active'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps
+			})
+		}
+		if(stepUpdate.id === 5 && stepUpdate.status === 'complete') {
+			let updateSteps = this.state.steps.map(m => {
+									if( m.id === 5 ) {
+										return {...m, status: 'complete'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps,
+				end: true
 			})
 		}
 	}
