@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import Step from './Step'
 
 const steps = [
-		{id: 1, name: 'Step', milliseconds: 0, intervalValue: 10, status: 'ready', countStartVal: 0, countEndVal: 140, beforeId: 2, afterId: null},
+		{id: 1, name: 'Step', milliseconds: 0, intervalValue: 10, status: 'static', countStartVal: 0, countEndVal: 140, beforeId: 2, afterId: null},
 		{id: 2, name: 'Step', milliseconds: 0, intervalValue: 200, status: 'static', countStartVal: 6000, countEndVal: 2000, beforeId: null, afterId: 3},
 		{id: 3, name: 'Step', milliseconds: 0, intervalValue: 5, status: 'static', countStartVal: 0, countEndVal: 45, beforeId: 4, afterId: null},
 		{id: 4, name: 'Step', milliseconds: 0, intervalValue: 200, status: 'static', countStartVal: 4000, countEndVal: 0, beforeId: null, afterId: 5},
@@ -18,15 +18,33 @@ class WizardToStanIn extends React.Component {
 		this.state = this.initialState = {
 			steps: steps,
 			mode: false,
-			start: true,
+			start: false,
 			end: false
 		};
 	}
 
+	componentDidMount() {
+		
+	}
+
 	componentWillReceiveProps(nextProps) {
-		// this.setState({
-		// 	isRunning: nextProps.prop.isRunning > this.props.prop.isRunning
-		// })
+		if(nextProps.isActive > this.props.isActive) {
+			this.startWizard()
+		}
+	}
+
+	startWizard() {
+		let updateSteps = this.state.steps.map(m => {
+								if(m.id === 1) {
+									return {...m, status: 'ready'}
+								} else {
+									return m
+								}
+							})
+		this.setState({
+			start: true,
+			steps: updateSteps
+		})	
 	}
 
 	handleAactionStep(stepUpdate) {

@@ -24,9 +24,10 @@ class App extends React.Component {
 		this.state = this.initialState = {
 			mode: 0,
 			currentDB: 0,
-			isRunning: false,
-			lapTimes: [],
-			timeElapsed: 0,
+			wizard: {
+				WizardToStanIn: false,
+				WizardToMainDataBase: false
+			}
 		};
 	}
 
@@ -42,8 +43,14 @@ class App extends React.Component {
 		})
 	}
 
+	startWizard(current) {
+		this.setState({
+			wizard: {...this.state.wizard, [current]: true}
+		})
+	}
+
 	render() {
-		const { mode, currentDB, isRunning, lapTimes, timeElapsed } = this.state;
+		const { mode, currentDB } = this.state;
 		return (
 			<div>
 				<div className="panel manager">
@@ -62,10 +69,10 @@ class App extends React.Component {
 							{ currentDB === 0 ? 
 							<Button 
 							bsStyle="warning" 
-							onClick={ () => this.togglecCurrentDB(1) }>Перейти в Stand-In</Button> :
+							onClick={ () => this.startWizard('WizardToStanIn') }>Перейти в Stand-In</Button> :
 							<Button 
 							bsStyle="warning" 
-							onClick={ () => this.togglecCurrentDB(0) }>Перейти в Main DB</Button>
+							onClick={ () => this.startWizard('WizardToMainDataBase') }>Перейти в Main DB</Button>
 							}
 						</div>
 					</div>
@@ -74,7 +81,11 @@ class App extends React.Component {
 					<div className="container"><Clock intervalCount={20}/> | <Clock intervalCount={1}/></div>
 				</div>
 				<div className="container">
-					{ currentDB === 0 ? <WizardToStanIn /> : <WizardToMainDataBase /> }
+					{ currentDB === 0 ? 
+						<WizardToStanIn 
+						isActive={this.state.wizard.WizardToStanIn} /> : 
+						<WizardToMainDataBase 
+						isActive={this.state.wizard.WizardToMainDataBase}/> }
 				</div>
 			</div>			
 		)
