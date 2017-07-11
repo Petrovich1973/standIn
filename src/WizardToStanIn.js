@@ -88,6 +88,7 @@ class WizardToStanIn extends React.Component {
 				steps: updateSteps,
 				end: true
 			})
+			this.props.upTimeAll(false)
 		}
 	}
 
@@ -116,6 +117,7 @@ class WizardToStanIn extends React.Component {
 				steps: updateSteps,
 				start: false
 			})
+			this.props.upTimeAll(true)
 		}
 		if(stepUpdate.id === 5 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
 			let updateSteps = this.state.steps.map(m => {
