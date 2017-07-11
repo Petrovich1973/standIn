@@ -48,18 +48,6 @@ class WizardToStanIn extends React.Component {
 	}
 
 	handleAactionStep(stepUpdate) {
-		if(stepUpdate.id === 1 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
-			let updateSteps = this.state.steps.map(m => {
-									if(m.id === 1 || m.id === 2 ) {
-										return {...m, status: 'active'}
-									} else {
-										return m
-									}
-								})
-			this.setState({
-				steps: updateSteps
-			})
-		}
 		if(stepUpdate.id === 2 && stepUpdate.status === 'complete') {
 			let updateSteps = this.state.steps.map(m => {
 									if( m.id === 3 ) {
@@ -74,37 +62,12 @@ class WizardToStanIn extends React.Component {
 				steps: updateSteps
 			})
 		}
-		if(stepUpdate.id === 3 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
-			let updateSteps = this.state.steps.map(m => {
-									if(m.id === 3 || m.id === 4 ) {
-										return {...m, status: 'active'}
-									} else {
-										return m
-									}
-								})
-			this.setState({
-				steps: updateSteps,
-				start: false
-			})
-		}
 		if(stepUpdate.id === 4 && stepUpdate.status === 'complete') {
 			let updateSteps = this.state.steps.map(m => {
 									if( m.id === 5 ) {
 										return {...m, status: 'ready'}
 									} else if( m.id === 3 || m.id === 4 ) {
 										return {...m, status: 'complete'}
-									} else {
-										return m
-									}
-								})
-			this.setState({
-				steps: updateSteps
-			})
-		}
-		if(stepUpdate.id === 5 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
-			let updateSteps = this.state.steps.map(m => {
-									if(m.id === 5 ) {
-										return {...m, status: 'active'}
 									} else {
 										return m
 									}
@@ -128,12 +91,56 @@ class WizardToStanIn extends React.Component {
 		}
 	}
 
+	handleClickStep(stepUpdate) {
+		if(stepUpdate.id === 1 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
+			let updateSteps = this.state.steps.map(m => {
+									if(m.id === 1 || m.id === 2 ) {
+										return {...m, status: 'active'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps
+			})
+		}
+		if(stepUpdate.id === 3 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
+			let updateSteps = this.state.steps.map(m => {
+									if(m.id === 3 || m.id === 4 ) {
+										return {...m, status: 'active'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps,
+				start: false
+			})
+		}
+		if(stepUpdate.id === 5 && this.state.steps.filter(f => f.id === stepUpdate.id)[0].status === 'ready') {
+			let updateSteps = this.state.steps.map(m => {
+									if(m.id === 5 ) {
+										return {...m, status: 'active'}
+									} else {
+										return m
+									}
+								})
+			this.setState({
+				steps: updateSteps
+			})
+		}
+	}
+
 	render() {
 		const { steps, start, end } = this.state;
 		return (
 			<div className="wizard toRight">
 				<div className={start ? 'db green' : 'db'}>Main DB</div>
-				{ steps.map(m => <Step key={m.id} step={m} handleAactionStep={this.handleAactionStep.bind(this)} />) }
+				{ steps.map(m => <Step 
+									key={m.id} 
+									step={m} 
+									clickStep={this.handleClickStep.bind(this)}
+									handleAactionStep={this.handleAactionStep.bind(this)} />) }
 				<div className={end ? 'db green' : 'db'}>Stand-In</div>
 			</div>
 			);

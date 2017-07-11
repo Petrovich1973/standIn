@@ -80,7 +80,7 @@ class Step extends React.Component {
 	}
 
 	clickStep() {
-		this.props.handleAactionStep(this.state.step);
+		this.props.clickStep(this.state.step);
 	}
 
 	render() {
