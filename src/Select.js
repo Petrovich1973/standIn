@@ -40,7 +40,7 @@ class Select extends React.Component {
     }
 
     handleClickOption(value) {
-        this.props.onChange(value);
+        this.props.onChange({name: this.props.name, value: value});
         setTimeout( this.isOpen, 100);
     }
 
@@ -63,14 +63,15 @@ class Select extends React.Component {
     }
 
     render() {
-        const { value, options } = this.props;
+        const { value, options, name } = this.props;
         const { open, maxWidth } = this.state;
         return (
             <div className={open ? 'select open' : 'select'} ref={(node) => { this.selectRef = node }}>
                 <div 
                 className="select__current"
+                name={name}
                 onClick={this.isOpen}>
-                    {value}
+                    {value.length ? value : 'all'}
                 </div>
                 <div className="select__list" style={{maxWidth: `${maxWidth}px`}}>
                     {options.map((m, i) => {

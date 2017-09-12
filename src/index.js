@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 
 import Select from './Select';
 
+import Input from './Input';
+
 class App extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -16,42 +18,103 @@ class App extends React.Component {
                 current: "Анжелочка"
             }
         };
-        this.onChange1 = this.onChange1.bind(this);
-        this.onChange2 = this.onChange2.bind(this);
+        this.onChangeInput = this.onChangeInput.bind(this);
+        this.onChangeSelect = this.onChangeSelect.bind(this);
     }
 
-    onChange1(value) {
-        this.setState({ select1: {...this.state.select1, current: value} });
+    componentWillMount() {
+        this.createStateInput();
+        this.createStateSelect();
     }
 
-    onChange2(value) {
-        this.setState({ select2: {...this.state.select2, current: value} });
+    createStateInput() {
+        let res = {};
+        for (var i = 0; i < 400; i++) {
+            res['input' + i] = '';
+        }
+        this.setState({ input: res });
+    }
+
+    createStateSelect() {
+        let res = {};
+        for (var i = 0; i < 400; i++) {
+            res['select' + i] = '';
+        }
+        this.setState({ select: res });
+    }
+
+    onChangeInput(element) {
+        this.setState({ input: {...this.state.input, [element.name]: element.value} });
+    }
+
+    createListInputs() {
+        return Object.keys(this.state.input).map((m, i) => {
+            return (
+                <div
+                key={i} 
+                className="cell">
+                    <Input 
+                    onChange={this.onChangeInput}
+                    name={m}
+                    value={ this.state.input[m] }
+                    />
+                </div>
+            )
+        });
+    }
+
+    // onChangeInput(element) {
+    //     this.setState({ input: {...this.state.input, [element.target.name]: element.target.value} });
+    // }
+
+    // createListInputs() {
+    //     return Object.keys(this.state.input).map((m, i) => {
+    //         return (
+    //             <div
+    //             key={i} 
+    //             className="cell">
+    //                 <input 
+    //                 className="input"
+    //                 onChange={this.onChangeInput}
+    //                 name={m}
+    //                 value={ this.state.input[m] }
+    //                 />
+    //             </div>
+    //         )
+    //     });
+    // }
+
+    onChangeSelect(element) {
+        this.setState({ select: {...this.state.select, [element.name]: element.value} });
+    }
+
+    createListSelects() {
+        return null;
+        return Object.keys(this.state.select).map((m, i) => {
+            return (
+                <div
+                key={i} 
+                className="cell">
+                    <Select 
+                    onChange={this.onChangeSelect}
+                    name={m}
+                    value={ this.state.select[m] }
+                    options={this.state.select1.options}
+                    />
+                </div>
+            )
+        });
     }
 
 	render() {
-        const { select1, select2 } = this.state;
         return (
             <div className="container">
 
-                <div className="row">
+                <div className="grid">
 
-                    <div className="col-md-6">
-                        <h3>{select1.current}</h3>
-                        <Select 
-                        onChange={this.onChange1}
-                        value={select1.current}
-                        options={select1.options}
-                        />
-                    </div>
+                    { this.createListInputs() }
 
-                    <div className="col-md-6">
-                        <h3>{select2.current}</h3>
-                        <Select 
-                        onChange={this.onChange2}
-                        value={select2.current}
-                        options={select2.options}
-                        />
-                    </div>
+                    { this.createListSelects() }
 
                 </div>
 

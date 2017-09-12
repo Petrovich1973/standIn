@@ -1,11 +1,32 @@
 body {
-	font-size: 28px;
+	font-size: 14px;
 	background-color: rgba(0, 0, 0, .01);
 }
 .colorRed {
 	color: red;
 }
+.grid {
+	display: flex;
+	flex-wrap: wrap;
+}
+.cell {
+	display: inline-block;
+	width: 20%;
+	box-sizing: border-box;
+	padding: 4px;
+}
 
+.input {
+	display: block;
+	width: 100%;
+	padding: 5px 10px;
+	margin: 0;
+	border: 1px solid #dedede;
+}
+
+
+
+/* --------------------select---------------------- */
 .select {
 	display: block;
 	position: relative;
@@ -77,3 +98,4 @@ body {
 .select__list > div:not(.active):hover {
 	background-color: #f5f5f5;
 }
+/* ---------------------end select--------------------- */
