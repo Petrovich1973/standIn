@@ -1,123 +1,65 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import { 
-	Form,
-	FormGroup,
-	Col,
-	ControlLabel,
-	FormControl,
-	Checkbox,
-	ButtonGroup,
-	Button } from 'react-bootstrap'
-
-import WizardToStanIn from './WizardToStanIn'
-import WizardToMainDataBase from './WizardToMainDataBase'
-
-import Clock from './Clock'
-
-import moment from 'moment'
-
+import Select from './Select';
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-
+    constructor(props, context) {
+        super(props, context);
 		this.state = this.initialState = {
-			mode: 0,
-			currentDB: 0,
-			wizard: {
-				WizardToStanIn: false,
-				WizardToMainDataBase: false
-			},
-			milliseconds: 0
-		};
-	}
+            select1: {
+                options: ["red","green","Длинный пункт выпадающего списка","blue","purple","orange","gray","black","white"],
+                current: "green"
+            },
+            select2: {
+                options: ["Ира","Петя","Волшебный голос Джельсомино Баттона","Николай","Митрофан","Олеся","Григорий","Игорь","Катерина","Анжелочка"],
+                current: "Анжелочка"
+            }
+        };
+        this.onChange1 = this.onChange1.bind(this);
+        this.onChange2 = this.onChange2.bind(this);
+    }
 
-	toggleMode(current) {
-		this.setState({
-			mode: current
-		})
-	}
+    onChange1(value) {
+        this.setState({ select1: {...this.state.select1, current: value} });
+    }
 
-	togglecCurrentDB(current) {
-		this.setState({
-			currentDB: current
-		})
-	}
-
-	startWizard(current) {
-		this.setState({
-			wizard: {...this.state.wizard, [current]: true}
-		})
-	}
-
-	viewTime(value) {
-		let seconds = moment.duration(value).seconds();
-		let minutes = moment.duration(value).minutes();
-		let hours = moment.duration(value).hours();
-		let pad2 = (number) => {return (number < 10 ? '0' : '') + number};
-		return pad2(hours) + ':' + pad2(minutes) + ':' + pad2(seconds);
-	}
-
-	upTimeAll(value) {
-		if( value === true ) {
-			this.intervalTimeAll = setInterval( this.timeIntervalAll.bind(this), 1000 )
-		} else {
-			clearInterval( this.intervalTimeAll )
-		}		
-	}
-
-	timeIntervalAll() {
-		this.setState({
-			milliseconds: this.state.milliseconds += 1000
-		})
-	}
+    onChange2(value) {
+        this.setState({ select2: {...this.state.select2, current: value} });
+    }
 
 	render() {
-		const { mode, currentDB } = this.state;
-		return (
-			<div>
-				<div className="panel manager">
-					<div className="container">
-						<div className="pullLeft">
-							<ButtonGroup>
-								<Button 
-								bsStyle={ mode === 0 ? 'success' : null } 
-								onClick={ () => this.toggleMode(0) }>Ручной</Button>
-								<Button 
-								bsStyle={ mode === 1 ? 'success' : null } 
-								onClick={ () => this.toggleMode(1) }>Автоматический</Button>
-							</ButtonGroup>
-						</div>
-						<div className="pullRight">
-							{ currentDB === 0 ? 
-							<Button 
-							bsStyle="warning" 
-							onClick={ () => this.startWizard('WizardToStanIn') }>Перейти в Stand-In</Button> :
-							<Button 
-							bsStyle="warning" 
-							onClick={ () => this.startWizard('WizardToMainDataBase') }>Перейти в Main DB</Button>
-							}
-						</div>
-					</div>
-				</div>
-				<div className="panel controls">
-					<div className="container"><Clock intervalCount={20}/> | <Clock intervalCount={1}/> {this.viewTime(this.state.milliseconds)}</div>
-				</div>
-				<div className="container">
-					{ currentDB === 0 ? 
-						<WizardToStanIn 
-						upTimeAll={this.upTimeAll.bind(this)}
-						isActive={this.state.wizard.WizardToStanIn} /> : 
-						<WizardToMainDataBase 
-						isActive={this.state.wizard.WizardToMainDataBase}/> }
-				</div>
-			</div>			
-		)
+        const { select1, select2 } = this.state;
+        return (
+            <div className="container">
+
+                <div className="row">
+
+                    <div className="col-md-6">
+                        <h3>{select1.current}</h3>
+                        <Select 
+                        onChange={this.onChange1}
+                        value={select1.current}
+                        options={select1.options}
+                        />
+                    </div>
+
+                    <div className="col-md-6">
+                        <h3>{select2.current}</h3>
+                        <Select 
+                        onChange={this.onChange2}
+                        value={select2.current}
+                        options={select2.options}
+                        />
+                    </div>
+
+                </div>
+
+            </div>
+        );
 	}
 }
 
+App.displayName = 'App';
 
-
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'));
